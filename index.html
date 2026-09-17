@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!--
+  ════════════════════════════════════════════════════════════════
+  gmonad — static site. One file. No build step, no dependencies.
+
+  FILL THESE IN BEFORE YOU TELL ANYONE ABOUT IT:
+    1. var SITE          (bottom of this file) — your real domain
+    2. var CONTRACT       — the token address, once it exists
+    3. LINK_BUY / LINK_DEX / LINK_SCAN / LINK_X / LINK_TG
+    4. <meta property="og:*"> url + image below
+  Everything marked "soon" on the page stays honest until you do.
+  ════════════════════════════════════════════════════════════════
+-->
+
+<title>gmonad — one gmonad a day keeps the bear market away</title>
+<meta name="description" content="Say gmonad every morning, hold $GMONAD the rest of the day. 3% of every transfer is paid straight to holders in $MON. No staking, no claiming, nothing kept by the creator.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="one gmonad a day keeps the bear market away">
+<meta property="og:description" content="3% of every transfer, paid to holders in $MON. No staking, no claiming, nothing kept by the creator.">
+<!-- <meta property="og:url" content="https://YOURDOMAIN"> -->
+<!-- <meta property="og:image" content="https://YOURDOMAIN/og.png"> -->
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230D0B14'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%236E54FF'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --ground:#0D0B14; --card:#171320; --card-2:#1F1A2C; --line:#2E2740;
+  --hair:#1E1A2B; --text:#F2EEFB; --muted:#8A80A6; --dim:#5E567C;
+  --accent:#6E54FF; --glow:#A392FF; --burn:#FF6B4A;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --mono:'DM Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ground);color:var(--text);
+  font-family:var(--mono);-webkit-font-smoothing:antialiased;
+}
+a{color:var(--glow);text-decoration:none}
+a:hover{color:#C9BDFF}
+img{max-width:100%}
+
+.inner{max-width:1120px;margin:0 auto;padding-left:20px;padding-right:20px}
+.sect{border-top:1px solid var(--hair);padding-block:clamp(56px,9vw,104px)}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0}
+.h2{font-family:var(--display);font-weight:800;font-size:clamp(28px,5.2vw,44px);
+    line-height:1.06;letter-spacing:-.022em;margin:14px 0 0;text-wrap:balance}
+.lede{font-size:clamp(13px,2.6vw,14px);line-height:1.75;color:var(--muted);margin:0}
+
+/* ───────── nav ───────── */
+.nav{position:sticky;top:0;z-index:40;background:rgba(13,11,20,.86);
+     backdrop-filter:blur(12px);border-bottom:1px solid var(--hair)}
+.nav .inner{height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.mark{display:flex;align-items:center;gap:10px}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--accent);display:inline-block;flex:none}
+.wordmark{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.01em;color:var(--text)}
+.navlinks{display:flex;align-items:center;gap:30px;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.navlinks a{color:var(--muted)}
+.navlinks a:hover{color:var(--text)}
+.cta{background:var(--accent);color:#fff;border:0;border-radius:11px;padding:11px 20px;
+     font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:0;
+     text-transform:none;cursor:pointer;display:inline-block}
+.cta:hover{filter:brightness(1.12);color:#fff}
+@media(max-width:820px){.navlinks a{display:none}}
+
+/* ───────── hero ───────── */
+.hero{padding-block:clamp(52px,8vw,104px)}
+.hero .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(32px,5vw,72px);align-items:center}
+.badge{border:1px solid var(--line);border-radius:999px;padding:7px 15px;
+       font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--glow);
+       display:inline-block;align-self:flex-start}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,6.4vw,56px);
+   line-height:1.04;letter-spacing:-.03em;margin:0;text-wrap:balance}
+h1 span{color:var(--glow)}
+.hero .col{display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.hero .buttons{display:flex;gap:12px;flex-wrap:wrap;padding-top:4px}
+.big{border-radius:13px;padding:16px 26px;font-family:var(--display);font-weight:800;
+     font-size:16px;cursor:pointer;border:1px solid transparent;display:inline-block}
+.big.solid{background:var(--accent);color:#fff}
+.big.solid:hover{filter:brightness(1.12);color:#fff}
+.big.ghost{border-color:var(--line);color:var(--text);background:transparent}
+.big.ghost:hover{border-color:var(--accent);color:var(--glow)}
+@media(max-width:880px){.hero .grid{grid-template-columns:1fr}}
+
+/* ───────── the card ───────── */
+.shot{
+  background:radial-gradient(120% 130% at 8% -10%,rgba(110,84,255,.26) 0%,rgba(110,84,255,0) 60%),var(--card);
+  border:1px solid var(--line);border-radius:20px;padding:30px 26px 22px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:250px;
+}
+.shot .line{font-family:var(--display);font-weight:800;font-size:clamp(22px,3.4vw,30px);
+            line-height:1.16;letter-spacing:-.018em;text-wrap:balance;margin:0}
+.shot .line em{font-style:normal;color:var(--glow)}
+.shot .sig{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+           font-size:10.5px;letter-spacing:.18em;text-transform:uppercase}
+.shot .sig .site{color:var(--glow);letter-spacing:.14em}
+.shot .sig .dot{width:7px;height:7px;margin-right:7px;vertical-align:1px}
+
+/* ───────── generator ───────── */
+.gen{width:100%;max-width:660px;margin:0 auto}
+.roll{width:100%;border:0;cursor:pointer;background:var(--accent);color:#fff;
+      font-family:var(--display);font-weight:800;font-size:19px;border-radius:15px;
+      padding:17px;margin-top:14px;transition:filter .2s,transform .1s}
+.roll:hover{filter:brightness(1.12)}
+.roll:active{transform:scale(.985)}
+.editor{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.editor label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+textarea{width:100%;background:var(--card-2);border:1px solid var(--line);border-radius:13px;
+         color:var(--text);font-family:var(--mono);font-size:13.5px;line-height:1.55;
+         padding:13px;resize:vertical;min-height:76px}
+textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+.count{font-size:10.5px;color:var(--muted);text-align:right;letter-spacing:.1em}
+.count.over{color:var(--burn)}
+.actions{display:flex;gap:9px;margin-top:12px}
+.btn{flex:1;border:1px solid var(--line);background:transparent;color:var(--text);
+     border-radius:13px;padding:13px 8px;cursor:pointer;font-family:var(--mono);
+     font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;text-align:center;
+     transition:border-color .2s,color .2s}
+.btn:hover{border-color:var(--accent);color:var(--glow)}
+.btn.x{background:var(--card-2)}
+.foot{font-size:10.5px;letter-spacing:.09em;color:var(--dim);text-align:center;line-height:1.9;margin:14px 0 0}
+@media(max-width:460px){.actions{flex-wrap:wrap}.btn{flex:1 1 calc(50% - 5px)}}
+
+/* ───────── flywheel ───────── */
+.wheel{display:flex;align-items:stretch;gap:10px;margin-top:48px}
+.box{flex:1;min-width:0;text-align:center;border:1px solid var(--line);border-radius:16px;
+     padding:22px 14px;
+     background:radial-gradient(120% 100% at 10% 0%,rgba(110,84,255,.14) 0%,rgba(110,84,255,0) 66%),var(--card)}
+.box .k{display:block;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.box .v{display:block;font-family:var(--display);font-weight:700;font-size:clamp(17px,2.2vw,20px);line-height:1.15}
+.box.accent{border-color:var(--accent)}
+.box.accent .v,.box .v em{font-style:normal;color:var(--glow)}
+.arrow{display:flex;align-items:center;justify-content:center;color:#3A3352;font-size:16px;flex:none}
+.arrow::before{content:'→'}
+.rail{position:relative;height:64px;margin-top:6px}
+.rail i{position:absolute;left:9%;right:9%;top:0;bottom:22px;border:1px solid var(--line);
+        border-top:0;border-radius:0 0 16px 16px}
+.rail b{position:absolute;left:9%;top:-1px;margin-left:-5px;width:0;height:0;
+        border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:7px solid var(--accent)}
+.rail em{position:absolute;left:0;right:0;bottom:0;text-align:center;font-style:normal;
+         font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--glow)}
+@media(max-width:880px){
+  .wheel{flex-direction:column;gap:0;margin-top:34px}
+  .arrow{height:24px}
+  .arrow::before{content:'↓'}
+  .rail{height:40px}
+  .rail i{left:4%;right:4%}
+  .rail b{left:4%}
+  .rail em{font-size:9px;letter-spacing:.14em}
+}
+
+/* ───────── wall ───────── */
+.wallhead{display:flex;align-items:flex-end;justify-content:space-between;gap:36px;flex-wrap:wrap}
+.walls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}
+@media(max-width:980px){.walls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.walls{grid-template-columns:1fr}}
+.post{background:#141120;border:1px solid var(--line);border-radius:16px;padding:20px}
+.post .who{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.post .av{width:34px;height:34px;border-radius:50%;background:#2A2440;flex:none}
+.post .nm{display:flex;flex-direction:column;gap:3px;min-width:0}
+.post .nm span:first-child{font-size:12.5px;color:var(--text)}
+.post .nm span:last-child{font-size:11px;color:#6F678C}
+.post p{font-size:13.5px;line-height:1.6;color:#D9D3EC;margin:0}
+.post time{display:block;font-size:10.5px;color:var(--dim);margin-top:14px;letter-spacing:.06em}
+.slot{border:1px dashed #3A3352;border-radius:16px;padding:20px;
+      display:flex;flex-direction:column;justify-content:center;gap:12px}
+
+/* ───────── token ───────── */
+.tokgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(32px,5vw,64px);align-items:start}
+@media(max-width:880px){.tokgrid{grid-template-columns:1fr}}
+.ca{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+    border-radius:13px;padding:15px 17px}
+.ca code{font-family:var(--mono);font-size:13px;color:var(--glow);overflow:hidden;
+         text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.chip{border:1px solid var(--line);border-radius:11px;padding:12px 18px;font-size:11px;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:transparent;
+      cursor:pointer;font-family:var(--mono);display:inline-block}
+.chip:hover{border-color:var(--accent);color:var(--glow)}
+.chip.sm{padding:7px 11px;font-size:10px;letter-spacing:.14em;margin-left:auto;flex:none}
+.chips{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.plate{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+       background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.plate span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.plate b{font-family:var(--display);font-weight:800;font-size:clamp(22px,3.4vw,28px);color:var(--glow)}
+.plate b.plain{color:var(--text)}
+.plates{display:flex;flex-direction:column;gap:12px}
+
+/* ───────── faq ───────── */
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 72px}
+@media(max-width:880px){.faq{grid-template-columns:1fr}}
+.faq .full{grid-column:1/-1}
+.faq h3{font-family:var(--display);font-weight:700;font-size:18px;margin:0 0 10px}
+.faq p{font-size:13.5px;line-height:1.8;color:var(--muted);margin:0}
+
+/* ───────── footer ───────── */
+footer{border-top:1px solid var(--hair);padding-block:52px 64px}
+footer .inner{display:flex;align-items:flex-start;justify-content:space-between;gap:44px;flex-wrap:wrap}
+.cols{display:flex;gap:44px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;flex-wrap:wrap}
+.cols div{display:flex;flex-direction:column;gap:12px}
+.cols .hd{color:var(--dim);font-size:10px}
+.cols a{color:var(--muted)}
+.motto{font-size:12px;line-height:1.6;color:var(--glow);margin:2px 0 4px}
+.legal{font-size:11px;line-height:1.9;color:var(--dim);margin:0;max-width:420px}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ═══ nav ═══ -->
+<nav class="nav">
+  <div class="inner">
+    <a class="mark" href="#top"><span class="dot"></span><span class="wordmark">gmonad</span></a>
+    <div class="navlinks">
+      <a href="#say">say it</a>
+      <a href="#how">how it works</a>
+      <a href="#wall">the wall</a>
+      <a href="#token">token</a>
+      <a class="cta" id="buy1" href="#token">Buy $GMONAD</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ hero ═══ -->
+<header class="hero inner" id="top">
+  <div class="grid">
+    <div class="col">
+      <span class="badge">3% of every transfer → holders</span>
+      <h1>One <span>gmonad</span> a day<br>keeps the bear market away.</h1>
+      <p class="lede" style="max-width:430px;font-size:15px">Say it every morning, hold the token the rest of the day. Every transfer taxes 3% and pays it straight to holders — no staking, no claiming, nothing kept by the creator.</p>
+      <div class="buttons">
+        <a class="big solid" href="#token">Buy $GMONAD</a>
+        <a class="big ghost" href="#say">Make a card</a>
+      </div>
+    </div>
+    <div class="shot">
+      <p class="line"><em>gmonad</em>. I have been early for eleven consecutive months.</p>
+      <div class="sig">
+        <span><span class="dot" style="display:inline-block"></span>gmonad</span>
+        <span class="site heroSite">gmonad.fun</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ generator ═══ -->
+<section class="sect" id="say">
+  <div class="inner" style="display:flex;flex-direction:column;align-items:center">
+    <p class="eyebrow">say it</p>
+    <h2 class="h2" style="text-align:center;max-width:640px">Roll a line. Save the card. Post it.</h2>
+    <p class="lede" style="margin:16px 0 40px;text-align:center;max-width:470px">96 lines about being wrong onchain. Edit any of them before you post — it's your account.</p>
+
+    <div class="gen">
+      <div class="shot" id="shot">
+        <p class="line" id="line">gmonad to everyone except my entry price.</p>
+        <div class="sig">
+          <span><span class="dot" style="display:inline-block"></span>gmonad</span>
+          <span class="site" id="siteTag">gmonad.fun</span>
+        </div>
+      </div>
+
+      <button class="roll" id="roll">another one</button>
+
+      <div class="editor">
+        <label for="draft">edit before you post</label>
+        <textarea id="draft" spellcheck="false"></textarea>
+        <div class="count" id="count">0 / 280</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="save">save card</button>
+        <button class="btn" id="copy">copy text</button>
+        <button class="btn x" id="post">post on X</button>
+      </div>
+
+      <p class="foot" id="foot">no rewards, no points, no wallet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ flywheel ═══ -->
+<section class="sect" id="how">
+  <div class="inner">
+    <div style="text-align:center">
+      <p class="eyebrow">how it works</p>
+      <h2 class="h2" style="max-width:600px;margin-left:auto;margin-right:auto">The tax is the product</h2>
+    </div>
+
+    <div class="wheel">
+      <div class="box"><span class="k">activity</span><span class="v">nad.fun</span></div>
+      <div class="arrow"></div>
+      <div class="box"><span class="k">generates</span><span class="v">fees</span></div>
+      <div class="arrow"></div>
+      <div class="box"><span class="k">hold</span><span class="v"><em>$GMONAD</em></span></div>
+      <div class="arrow"></div>
+      <div class="box"><span class="k">denominator</span><span class="v"><em>$MON</em></span></div>
+      <div class="arrow"></div>
+      <div class="box accent"><span class="k">3% transfer tax</span><span class="v">$MON to holders</span></div>
+    </div>
+
+    <div class="rail"><i></i><b></b><em>more holders → more volume → more fees</em></div>
+
+    <p class="lede" style="margin:40px auto 0;max-width:560px;text-align:center;font-size:12.5px;line-height:1.85">Fees accrue in <b style="color:var(--text);font-weight:500">$MON</b> because $MON is the denominator. Holders are paid on every transfer — no staking, no claiming, nothing kept by the creator.</p>
+  </div>
+</section>
+
+<!-- ═══ the wall ═══ -->
+<section class="sect" id="wall">
+  <div class="inner">
+    <div class="wallhead">
+      <div>
+        <p class="eyebrow">the wall</p>
+        <h2 class="h2" style="max-width:500px">Everything anyone said</h2>
+      </div>
+      <p class="lede" style="max-width:360px;font-size:12.5px;line-height:1.8">Posts containing the word land here. We don't scrape — you send yours in and it gets approved by hand.</p>
+    </div>
+
+    <div class="walls">
+      <!-- EXAMPLE TILES — replace with real approved posts. Keep the X attribution
+           (avatar, display name, @handle, timestamp, link to the post) when you do:
+           X's Display Requirements make that mandatory for real posts. -->
+      <article class="post">
+        <div class="who"><span class="av"></span><span class="nm"><span>[display name]</span><span>@handle</span></span>
+          <svg width="17" height="17" viewBox="0 0 24 24" style="margin-left:auto;flex:none"><path d="M3 3l7.5 9.8L3.4 21h2.2l6-6.9 5.3 6.9H21l-7.9-10.3L20.6 3h-2.2l-5.5 6.3L8.1 3H3z" fill="#4A4368"/></svg>
+        </div>
+        <p>gmonad. I have been early for eleven consecutive months.</p>
+        <time>example post</time>
+      </article>
+      <article class="post">
+        <div class="who"><span class="av"></span><span class="nm"><span>[display name]</span><span>@handle</span></span>
+          <svg width="17" height="17" viewBox="0 0 24 24" style="margin-left:auto;flex:none"><path d="M3 3l7.5 9.8L3.4 21h2.2l6-6.9 5.3 6.9H21l-7.9-10.3L20.6 3h-2.2l-5.5 6.3L8.1 3H3z" fill="#4A4368"/></svg>
+        </div>
+        <p>gmonad. paperhands fund my mornings now. beautiful system, no notes.</p>
+        <time>example post</time>
+      </article>
+      <article class="post">
+        <div class="who"><span class="av"></span><span class="nm"><span>[display name]</span><span>@handle</span></span>
+          <svg width="17" height="17" viewBox="0 0 24 24" style="margin-left:auto;flex:none"><path d="M3 3l7.5 9.8L3.4 21h2.2l6-6.9 5.3 6.9H21l-7.9-10.3L20.6 3h-2.2l-5.5 6.3L8.1 3H3z" fill="#4A4368"/></svg>
+        </div>
+        <p>gmonad. it wasn't a rug, it was a strategic exit by the team. into a car.</p>
+        <time>example post</time>
+      </article>
+      <article class="post">
+        <div class="who"><span class="av"></span><span class="nm"><span>[display name]</span><span>@handle</span></span>
+          <svg width="17" height="17" viewBox="0 0 24 24" style="margin-left:auto;flex:none"><path d="M3 3l7.5 9.8L3.4 21h2.2l6-6.9 5.3 6.9H21l-7.9-10.3L20.6 3h-2.2l-5.5 6.3L8.1 3H3z" fill="#4A4368"/></svg>
+        </div>
+        <p>gmonad. the top signal was me feeling confident.</p>
+        <time>example post</time>
+      </article>
+      <article class="post">
+        <div class="who"><span class="av"></span><span class="nm"><span>[display name]</span><span>@handle</span></span>
+          <svg width="17" height="17" viewBox="0 0 24 24" style="margin-left:auto;flex:none"><path d="M3 3l7.5 9.8L3.4 21h2.2l6-6.9 5.3 6.9H21l-7.9-10.3L20.6 3h-2.2l-5.5 6.3L8.1 3H3z" fill="#4A4368"/></svg>
+        </div>
+        <p>gmonad. deleted the app. redownloaded the app. this is growth.</p>
+        <time>example post</time>
+      </article>
+
+      <div class="slot">
+        <p class="lede" style="font-size:12.5px;line-height:1.7">Posted one? Send the link — submissions open when the token does.</p>
+        <button class="chip" id="seeAll" style="text-align:center">see them on X</button>
+        <p class="foot" style="margin:0;text-align:left;letter-spacing:.06em">the wall is curated by hand, not scraped.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ token ═══ -->
+<section class="sect" id="token">
+  <div class="inner">
+    <div class="tokgrid">
+      <div>
+        <p class="eyebrow">token</p>
+        <h2 class="h2">$GMONAD</h2>
+        <p class="lede" style="margin:18px 0 28px;max-width:420px">Launched on nad.fun. Paired against $MON. The contract is the whole product — read it before you buy anything.</p>
+
+        <p style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 9px">Contract address</p>
+        <div class="ca"><code id="ca">not deployed yet</code><button class="chip sm" id="copyCa">copy</button></div>
+
+        <div class="chips">
+          <a class="chip" id="lnkBuy" href="#" rel="noopener">nad.fun</a>
+          <a class="chip" id="lnkDex" href="#" rel="noopener">DEX Screener</a>
+          <a class="chip" id="lnkScan" href="#" rel="noopener">explorer</a>
+        </div>
+      </div>
+
+      <div class="plates">
+        <div class="plate"><span>Transfer tax</span><b>3%</b></div>
+        <div class="plate"><span>To holders</span><b>100%</b></div>
+        <div class="plate"><span>Kept by creator</span><b class="plain">0%</b></div>
+        <div class="plate"><span>Paid in</span><b>$MON</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ faq ═══ -->
+<section class="sect">
+  <div class="inner faq">
+    <div class="full">
+      <p class="eyebrow">questions</p>
+      <h2 class="h2">The short answers</h2>
+    </div>
+    <div>
+      <h3>Do I have to claim anything?</h3>
+      <p>No. The tax is taken on transfer and distributed on transfer. Holding is the entire action.</p>
+    </div>
+    <div>
+      <h3>Why is it paid in $MON?</h3>
+      <p>$MON is Monad's native token and the denominator this pair trades against, so fees accrue in it directly — no swap, no conversion step.</p>
+    </div>
+    <div>
+      <h3>What does the creator take?</h3>
+      <p>Nothing from the tax. Read the contract — that claim is either true onchain or it isn't.</p>
+    </div>
+    <div>
+      <h3>Is the card generator paid?</h3>
+      <p>No wallet, no rewards, no points. Post a line because it's funny, or don't post it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ footer ═══ -->
+<footer>
+  <div class="inner">
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:420px">
+      <div class="mark"><span class="dot"></span><span class="wordmark" style="font-size:17px">gmonad</span></div>
+      <p class="motto">One gmonad a day keeps the bear market away.</p>
+      <p class="legal">A memecoin. Not an investment, not advice, not a promise. It can go to zero and you would have no recourse. Buy only what you can lose entirely.</p>
+    </div>
+    <div class="cols">
+      <div>
+        <span class="hd">Site</span>
+        <a href="#say">Say it</a>
+        <a href="#wall">The wall</a>
+        <a href="#token">Token</a>
+      </div>
+      <div>
+        <span class="hd">Onchain</span>
+        <a id="fBuy" href="#">nad.fun</a>
+        <a id="fDex" href="#">DEX Screener</a>
+        <a id="fScan" href="#">Explorer</a>
+      </div>
+      <div>
+        <span class="hd">Elsewhere</span>
+        <a id="fX" href="#">X</a>
+        <a id="fTg" href="#">Telegram</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+
+  /* ══════════ EDIT THESE FIVE LINES ══════════ */
+  var SITE     = 'gmonad.fun';   // your domain, shown on the card
+  var CONTRACT = '';             // token address once it exists
+  var LINK_BUY = '';             // nad.fun token page
+  var LINK_DEX = '';             // dexscreener pair page
+  var LINK_SCAN= '';             // block explorer page
+  var LINK_X   = '';             // https://x.com/yourhandle
+  var LINK_TG  = '';             // https://t.me/yourgroup
+  /* ═══════════════════════════════════════════ */
+
+  var LINES = [
+    "gmonad. 3% of every transfer goes to holders. I did nothing and got paid. finally a business model I understand.",
+    "gmonad. every time someone panic sells, I get paid in $MON. thank you for your service.",
+    "gmonad. paperhands fund my mornings now. beautiful system, no notes.",
+    "gmonad. no staking, no claiming, no clicking. the tax just finds you.",
+    "gmonad. the creator keeps zero percent. read that twice, this is crypto.",
+    "gmonad. the flywheel doesn't care about your feelings. it just pays.",
+    "gmonad to everyone except my entry price.",
+    "gmonad. down 60% and somehow still not the worst decision I made this year.",
+    "gmonad. it's not a loss if you never open the app.",
+    "gmonad to my bags. still asleep. possibly dead.",
+    "gmonad. I sold at the bottom so it could run without me. selfless, really.",
+    "gmonad. my portfolio and I are no longer on speaking terms.",
+    "gmonad. bought the dip. there was another dip. there is always another dip.",
+    "gmonad. green candle appreciation society. currently one member. currently crying.",
+    "gmonad. I have been early for eleven consecutive months.",
+    "gmonad. not early. not late. just wrong.",
+    "gmonad. we're still so early, said the man holding a corpse.",
+    "gmonad. conviction is just being wrong for a longer period of time.",
+    "gmonad. checked the chart before I checked whether anyone in my house was alive.",
+    "gmonad. 4am is a valid trading session in at least one timezone.",
+    "gmonad. told my wife it's basically a savings account.",
+    "gmonad. I don't have a problem, I have an unrealized position.",
+    "gmonad. refreshed the same chart forty times. it did the same thing forty times.",
+    "gmonad. set a price alert so I could be disappointed on a schedule.",
+    "gmonad. everyone here is a genius in a bull market and a philosopher in a bear one.",
+    "gmonad. this is not financial advice and I am not emotionally stable.",
+    "gmonad to the devs. wherever they went.",
+    "gmonad. utility coming soon, as it has been for two years.",
+    "gmonad. read the whitepaper. understood four words. bought anyway.",
+    "gmonad. I don't understand the tech but I understand the chart, and I don't understand the chart.",
+    "gmonad. the roadmap has a Q4. it does not specify which year.",
+    "gmonad. we have a Discord, which is like a community but louder and angrier.",
+    "gmonad. got liquidated in my sleep. the market works while you rest.",
+    "gmonad. leverage is just impatience with extra steps.",
+    "gmonad. went 20x because 10x felt like I wasn't taking it seriously.",
+    "gmonad. the liquidity is gone but the memories remain.",
+    "gmonad. it wasn't a rug, it was a strategic exit by the team. into a car.",
+    "gmonad to everyone. even the guy who sold me this.",
+    "gmonad. new day, same bags, marginally worse.",
+    "gmonad. hope your morning is greener than my portfolio.",
+    "gmonad. another day of pretending I will sell at the top.",
+    "gmonad. my only strategy is vibes and my only risk management is denial.",
+    "gmonad. I have a spreadsheet. it has one column. the column says 'why'.",
+    "gmonad. bought high, sold low, repeated the process for clarity.",
+    "gmonad. six months ago this was going to change everything. it changed my mood.",
+    "gmonad. I diversified across nine assets that all do the same thing at the same time.",
+    "gmonad. the community is strong, which is what we say when the chart isn't.",
+    "gmonad. someone in the group chat says it's accumulation. someone always does.",
+    "gmonad. I'm not down, I'm accumulating at a premium.",
+    "gmonad. my cost basis is a personality trait at this point.",
+    "gmonad. announced I was taking a break from crypto. that was nine hours ago.",
+    "gmonad. deleted the app. redownloaded the app. this is growth.",
+    "gmonad. paid more in gas than the position was worth. no lesson was learned.",
+    "gmonad. the top signal was me feeling confident.",
+    "gmonad. found a coin with no utility, no team and no roadmap. finally, honesty.",
+    "gmonad. I have never once sold too early and I have never once sold at all.",
+    "gmonad. the chart looks like my sleep schedule.",
+    "gmonad. I'm long term now, which happened involuntarily at -70%.",
+    "gmonad. every cycle I say I've learned. every cycle I learn something new and worse.",
+    "gmonad. someone said wagmi and I felt personally excluded.",
+    "gmonad. did my own research. the research was a thread by an anime profile picture.",
+    "gmonad. bullish. no reason. just structurally incapable of being bearish before coffee.",
+    "gmonad. I was right about the direction and wrong about everything else.",
+    "gmonad. the plan was to take profit. there was no profit. the plan was fine.",
+    "gmonad. I'm not addicted, I just like the numbers moving. any numbers. these numbers.",
+    "gmonad. woke up rich. opened the app. corrected the situation.",
+    "gmonad. told myself I'd buy the next dip. it dipped. I did not.",
+    "gmonad. three screens, two theories, one position, zero profit.",
+    "gmonad. my technical analysis is a line I drew with my finger.",
+    "gmonad. support held until it didn't, which is the nature of support.",
+    "gmonad. shoutout to whoever bought my exit. you were right and I hate it.",
+    "gmonad. the whitepaper had a diagram. the diagram had arrows. I was convinced.",
+    "gmonad. I'm in it for the technology that makes the number go up.",
+    "gmonad. sold, watched it 4x, bought back higher. a complete artist.",
+    "gmonad. there is no bottom, only floors we haven't met yet.",
+    "gmonad. I've been told to touch grass. the grass is also down.",
+    "gmonad. my risk tolerance and my bank balance are having a disagreement.",
+    "gmonad. it's a marathon, not a sprint. I've been running four years. no finish line.",
+    "gmonad. the guy who said 'trust me' was, in fairness, very confident.",
+    "gmonad. I have made peace with the loss and also I check it hourly.",
+    "gmonad. everything is fine. the portfolio is red. both are true in some sense.",
+    "gmonad. my bags are so heavy they qualify as cargo.",
+    "gmonad. a rug is just a very fast bear market with a personal touch.",
+    "gmonad. I'm not chasing, I'm arriving enthusiastically and late.",
+    "gmonad. entered on a feeling. exited on a different, worse feeling.",
+    "gmonad. some of you bought the top with me and we don't talk about it enough.",
+    "gmonad. the team is doxxed, so we know exactly who to be disappointed in.",
+    "gmonad. still holding. not out of conviction. out of inability.",
+    "gmonad. profit is temporary, but this loss has been remarkably consistent.",
+    "gmonad. said I'd only invest what I could afford to lose, then lost more.",
+    "gmonad. wake up. coffee. chart. regret. repeat. beautiful routine honestly.",
+    "gmonad. we're not exit liquidity, we're early supporters with unfortunate timing.",
+    "gmonad. the dip was a trap. the recovery was also a trap. everything is a trap.",
+    "gmonad. bought because the logo was good. would do it again.",
+    "gmonad. someone asked for my portfolio and I sent a picture of a crater.",
+    "gmonad. the market is irrational and so am I, but only one of us has liquidity."
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var bag = [], current = -1;
+  var cardFile = null, cardBlob = null, buildTimer = null, fontsReady = false;
+
+  /* ---------- wire up the placeholders honestly ---------- */
+  $('siteTag').textContent = SITE;
+  var hs = document.querySelector('.heroSite'); if (hs) hs.textContent = SITE;
+
+  if (CONTRACT){ $('ca').textContent = CONTRACT; }
+  else { $('copyCa').textContent = 'soon'; $('copyCa').disabled = true; $('copyCa').style.opacity = '.5'; }
+
+  function link(id, url, fallback){
+    var el = $(id); if (!el) return;
+    if (url){ el.href = url; el.target = '_blank'; el.rel = 'noopener'; }
+    else { el.href = fallback || '#'; el.style.opacity = '.55'; el.title = 'not live yet'; }
+  }
+  link('lnkBuy', LINK_BUY, 'https://nad.fun');
+  link('lnkDex', LINK_DEX);
+  link('lnkScan', LINK_SCAN);
+  link('fBuy', LINK_BUY, 'https://nad.fun');
+  link('fDex', LINK_DEX);
+  link('fScan', LINK_SCAN);
+  link('fX', LINK_X);
+  link('fTg', LINK_TG);
+
+  $('copyCa').addEventListener('click', function(){
+    if (!CONTRACT) return;
+    navigator.clipboard && navigator.clipboard.writeText(CONTRACT).catch(function(){});
+    var b = $('copyCa'); b.textContent = 'copied';
+    setTimeout(function(){ b.textContent = 'copy'; }, 1500);
+  });
+
+  $('seeAll').addEventListener('click', function(){
+    window.open('https://x.com/search?q=gmonad&f=live', '_blank', 'noopener');
+  });
+
+  /* ---------- the generator ---------- */
+  function refill(){
+    bag = LINES.map(function(_,i){ return i; });
+    for (var i = bag.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = bag[i]; bag[i] = bag[j]; bag[j] = t;
+    }
+    if (bag.length > 1 && bag[bag.length - 1] === current){
+      var s = bag[0]; bag[0] = bag[bag.length - 1]; bag[bag.length - 1] = s;
+    }
+  }
+
+  function updateCount(){
+    var n = $('draft').value.length;
+    $('count').textContent = n + ' / 280';
+    $('count').className = 'count' + (n > 280 ? ' over' : '');
+  }
+
+  function intentUrl(){
+    return 'https://x.com/intent/post?text=' + encodeURIComponent($('draft').value);
+  }
+
+  function paint(text){
+    $('line').innerHTML = String(text)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/^gmonad/i, '<em>gmonad</em>')
+      .replace(/\$MON\b/g, '<em>$MON</em>');
+  }
+
+  function roll(){
+    if (!bag.length) refill();
+    current = bag.pop();
+    var text = LINES[current];
+    paint(text);
+    $('draft').value = text;
+    updateCount();
+    scheduleBuild(80);
+  }
+
+  $('draft').addEventListener('input', function(){
+    paint($('draft').value || ' ');
+    updateCount();
+    scheduleBuild(450);
+  });
+  $('roll').addEventListener('click', roll);
+
+  $('copy').addEventListener('click', function(){
+    var txt = $('draft').value;
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).catch(function(){});
+    else { $('draft').select(); try{ document.execCommand('copy'); }catch(e){} }
+    var b = $('copy');
+    b.textContent = 'copied';
+    setTimeout(function(){ b.textContent = 'copy text'; }, 1500);
+  });
+
+  /* ---------- render the card to a PNG ---------- */
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+
+  function wrapText(ctx,text,maxW){
+    var words = text.split(/\s+/), lines = [], line = '';
+    for (var i=0;i<words.length;i++){
+      var test = line ? line + ' ' + words[i] : words[i];
+      if (ctx.measureText(test).width > maxW && line){ lines.push(line); line = words[i]; }
+      else line = test;
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function drawCard(text){
+    var W = 1200, H = 675, P = 84;
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var ctx = c.getContext('2d');
+
+    ctx.fillStyle = '#0D0B14';
+    ctx.fillRect(0,0,W,H);
+
+    var g = ctx.createRadialGradient(W*0.10, -H*0.16, 0, W*0.10, -H*0.16, W*0.92);
+    g.addColorStop(0,'rgba(110,84,255,0.30)');
+    g.addColorStop(1,'rgba(110,84,255,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,W,H);
+
+    ctx.strokeStyle = '#2E2740';
+    ctx.lineWidth = 2;
+    roundRect(ctx, 22, 22, W-44, H-44, 30);
+    ctx.stroke();
+
+    var sizes = [72,62,54,46,40], lines = [], size = sizes[0];
+    for (var s=0;s<sizes.length;s++){
+      size = sizes[s];
+      ctx.font = '800 ' + size + 'px "Bricolage Grotesque", Arial, sans-serif';
+      lines = wrapText(ctx, text, W - P*2);
+      if (lines.length * size * 1.16 <= H - P*2 - 70) break;
+    }
+    ctx.fillStyle = '#F2EEFB';
+    ctx.textBaseline = 'alphabetic';
+    var lh = size * 1.16;
+    var startY = P + size;
+    for (var i=0;i<lines.length;i++) ctx.fillText(lines[i], P, startY + i*lh);
+
+    var fy = H - P + 6;
+    ctx.font = '500 22px "DM Mono", monospace';
+
+    ctx.fillStyle = '#6E54FF';
+    ctx.beginPath();
+    ctx.arc(P + 7, fy - 8, 7, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle = '#F2EEFB';
+    ctx.textAlign = 'left';
+    ctx.fillText('G M O N A D', P + 26, fy);
+
+    ctx.fillStyle = '#A392FF';
+    ctx.textAlign = 'right';
+    ctx.fillText(SITE.toUpperCase(), W - P, fy);
+    ctx.textAlign = 'left';
+
+    return c;
+  }
+
+  function toBlob(canvas){
+    return new Promise(function(res){ canvas.toBlob(res, 'image/png'); });
+  }
+
+  /* keep a ready-to-share PNG in hand so the post button can act
+     synchronously — navigator.share only works inside a user gesture */
+  async function build(){
+    if (!fontsReady){
+      try { await document.fonts.load('800 72px "Bricolage Grotesque"'); } catch(e){}
+      try { await document.fonts.load('500 22px "DM Mono"'); } catch(e){}
+      fontsReady = true;
+    }
+    var canvas = drawCard($('draft').value.trim() || 'gmonad');
+    cardBlob = await toBlob(canvas);
+    try { cardFile = new File([cardBlob], 'gmonad-card.png', { type: 'image/png' }); }
+    catch(e){ cardFile = null; }
+  }
+
+  function scheduleBuild(delay){
+    clearTimeout(buildTimer);
+    buildTimer = setTimeout(function(){ build().catch(function(){}); }, delay);
+  }
+
+  function canShareCard(){
+    return !!(cardFile && navigator.canShare && navigator.canShare({ files: [cardFile] }));
+  }
+
+  function saveCard(btn, okLabel){
+    var prev = btn.getAttribute('data-label') || btn.textContent;
+    btn.setAttribute('data-label', prev);
+    var done = function(msg){
+      btn.textContent = msg;
+      setTimeout(function(){ btn.textContent = prev; }, 2200);
+    };
+    if (!cardBlob){ done('try again'); return; }
+    try {
+      var url = URL.createObjectURL(cardBlob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'gmonad-card.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+      done(okLabel || 'saved');
+    } catch(e){ done('try again'); }
+  }
+
+  $('save').addEventListener('click', function(){ saveCard($('save')); });
+
+  $('post').addEventListener('click', function(){
+    var b = $('post');
+    if (canShareCard()){
+      navigator.share({ files: [cardFile], text: $('draft').value })
+        .catch(function(){ window.open(intentUrl(), '_blank', 'noopener'); });
+      return;
+    }
+    window.open(intentUrl(), '_blank', 'noopener');
+    if (cardBlob) saveCard(b, 'card saved — attach it');
+  });
+
+  refill();
+  roll();
+  build().then(function(){
+    $('foot').innerHTML = canShareCard()
+      ? 'the card goes with the post.<br>no rewards, no points, no wallet.'
+      : 'the card is saved for you — attach it in the composer.<br>no rewards, no points, no wallet.';
+  }).catch(function(){});
+})();
+</script>
+</body>
+</html>
